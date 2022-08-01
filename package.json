@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@apollo/react-ssr": "^4.0.0",
+    "@aws-amplify/auth": "^4.6.0",
+    "aws-amplify": "^4.3.29",
     "graphql": "^16.5.0",
     "next": "12.2.0",
     "next-auth": "^4.7.0",

@@ -1,27 +1,26 @@
-import "../styles/globals.css";
+import "../../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ApolloProvider } from "@apollo/client";
-import Nav from "../components/Nav";
+import Nav from "../../components/Nav";
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloLink,
-  createHttpLink,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { getSession } from "next-auth/react";
 
+import { Auth, Amplify } from "aws-amplify";
+import awsconfig from "../aws-exports";
+import AuthContext from "../context/AuthContext";
+
+Amplify.configure({ ...awsconfig, ssr: true });
 const httpLink = createHttpLink({
   uri: "https://moving-escargot-98.hasura.app/v1/graphql",
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  const session = await getSession();
+  const ses = await Auth.currentSession();
   return {
     headers: {
       ...headers,
-      authorization: session?.token ? `Bearer ${session.token}` : "",
+      authorization: `Bearer ${ses?.getIdToken()?.getJwtToken()}`,
     },
   };
 });
@@ -31,15 +30,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-function MyApp({ Component, pageProps, idToken }) {
-  console.log(idToken);
+function MyApp({ Component, pageProps }) {
   return (
-    <SessionProvider session={pageProps.session}>
+    <AuthContext>
       <ApolloProvider client={client}>
         <Nav />
         <Component {...pageProps} />
       </ApolloProvider>
-    </SessionProvider>
+    </AuthContext>
   );
 }
 
