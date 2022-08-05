@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { Auth } from "aws-amplify";
+import { useUser } from "../src/context/AuthContext";
 
 const Nav = () => {
+  const { user } = useUser();
   return (
     <ul>
       <li>
@@ -15,7 +17,11 @@ const Nav = () => {
         </Link>
       </li>
       <li>
-        <button onClick={() => signOut("cognito")}>Sign out</button>
+        {user ? (
+          <button onClick={() => Auth.signOut()}>Sign out</button>
+        ) : (
+          <Link href="/login">Login</Link>
+        )}
       </li>
     </ul>
   );
