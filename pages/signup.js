@@ -35,10 +35,11 @@ export default function Signup() {
     const { username, password, email } = data;
     try {
       const { user } = await Auth.signUp({
-        username,
+        username: email,
         password,
         attributes: {
           email,
+          name: username,
         },
       });
       console.log("Signed up a user:", user);

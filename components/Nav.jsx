@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Auth } from "aws-amplify";
-import { useUser } from "../src/context/AuthContext";
+import { useUser } from "../context/AuthContext";
 
 const Nav = () => {
   const { user } = useUser();

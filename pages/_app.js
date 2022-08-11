@@ -1,7 +1,7 @@
-import "../../styles/globals.css";
+import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ApolloProvider } from "@apollo/client";
-import Nav from "../../components/Nav";
+import Nav from "../components/Nav";
 
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -17,6 +17,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const ses = await Auth.currentSession();
+  console.log(ses?.getIdToken()?.getJwtToken());
   return {
     headers: {
       ...headers,

@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <h1>Home</h1>
       {user ? (
-        <div>You are logged in as {user.attributes.email}</div>
+        <div>You are logged in as {user.attributes.name}</div>
       ) : (
         <div>You are not logged in</div>
       )}
