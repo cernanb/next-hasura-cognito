@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { hotjar } from "react-hotjar";
 import { SessionProvider } from "next-auth/react";
 import { ApolloProvider } from "@apollo/client";
 import Nav from "../components/Nav";
@@ -9,6 +10,7 @@ import { setContext } from "@apollo/client/link/context";
 import { Auth, Amplify } from "aws-amplify";
 import awsconfig from "../aws-exports";
 import AuthContext from "../context/AuthContext";
+import { useEffect } from "react";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 const httpLink = createHttpLink({
@@ -32,6 +34,9 @@ const client = new ApolloClient({
 });
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    hotjar.initialize(3109760, 6);
+  }, []);
   return (
     <AuthContext>
       <ApolloProvider client={client}>
